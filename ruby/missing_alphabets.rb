@@ -23,8 +23,22 @@
 # Output them by the order a-z. 
 # If missing alphabet is repeated, please repeat them like "bbccdd", not "bcdbcd"
 
+require 'pry'
+
 def missing_alphabets(s)
-    #coding and coding..
+  alphabet = 'abcdefghijklmnopqrstuvwxyz'
+  newArr = []
+  currentChar = ''
+  s.each_char.with_index do |char, i|
+    if char != s[i + 1]
+      currentChar = char
+      newArr << s[s.index(char)..i]
+      s.sub(char, char)
+    end
+  end
+  p newArr
+  # get max length of item in newArr 
+  # get diff of newArr items and alphabet
 end
 
 missing_alphabets("abcdefghijklmnopqrstuvwxy")
