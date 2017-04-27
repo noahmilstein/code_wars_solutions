@@ -29,25 +29,49 @@ def missing_alphabets(s)
   alphabet = 'abcdefghijklmnopqrstuvwxyz'
   newArr = []
   currentChar = ''
-  s.each_char.with_index do |char, i|
-    if char != s[i + 1]
+  sorted = s.chars.sort.join
+
+  sorted.each_char.with_index do |char, i|
+    if char != sorted[i + 1]
       currentChar = char
-      newArr << s[s.index(char)..i]
+      newArr << sorted[sorted.index(char)..i]
       s.sub(char, char)
     end
   end
-  p newArr
-  # get max length of item in newArr 
-  # get diff of newArr items and alphabet
+  maxLength = newArr.max_by(&:length).length
+  answer = ''
+  alphabet.chars.each do |char|
+    if !sorted.include?(char)
+      answer += (char * maxLength)
+    elsif sorted.include?(char)
+      subtract = ''
+        newArr.any? do |c|
+          if c.include?(char)
+            subtract = c
+          end
+        end
+      answer += ((char * maxLength).sub(subtract, ''))
+    end
+  end
+  return answer
 end
 
-missing_alphabets("abcdefghijklmnopqrstuvwxy")
-# ,"z")
-missing_alphabets("abcdefghijklmnopqrstuvwxyz")
-# ,"")
-missing_alphabets("aabbccddeeffgghhiijjkkllmmnnooppqqrrssttuuvvwwxxyy")
-# ,"zz")
-missing_alphabets("abbccddeeffgghhiijjkkllmmnnooppqqrrssttuuvvwwxxy")
-# ,"ayzz")
-missing_alphabets("codewars")
-# ,"bfghijklmnpqtuvxyz")
+# def missing_alphabets(s)
+#   num_sets = s.chars.group_by(&:itself).values.sort_by(&:size).last.size
+#   alphabet = ('a'..'z').to_a
+#   alphabet.map do |letter|
+#     if s.count(letter) == num_sets
+#       ""
+#     else
+#       letter * (num_sets - s.count(letter))
+#     end
+#   end.join
+# end
+
+# def missing_alphabets(s)
+#     arr = []
+#     str = ''
+#     "abcdefghijklmnopqrstuvwxyz".each_char { |c| arr.push(s.count(c)) }
+#     arr.each.with_index { |i,index| str += "abcdefghijklmnopqrstuvwxyz"[index]*(arr.max-i) }
+#     str
+# end
