@@ -1,5 +1,8 @@
 # Suppose there are n people standing in a circle and they are numbered 1 through n in order.
-# Person 1 starts off with a sword and kills person 2. He then passes the sword to the next person still standing, in this case person 3. Person 3 then uses the sword to kill person 4, and passes it to person 5. This pattern continues around and around the circle until just one person remains.
+# Person 1 starts off with a sword and kills person 2.
+# He then passes the sword to the next person still standing, in this case person 3.
+# Person 3 then uses the sword to kill person 4, and passes it to person 5.
+# This pattern continues around and around the circle until just one person remains.
 # What is the number of this person?
 
 # Example:
@@ -18,54 +21,26 @@
 # [output] an integer
 # Return the index of the last person standing.
 
-require 'pry'
-
+# all test passing
+# getting an error `'each': failed to allocate memory (NoMemoryError)`
 def circle_slash(n)
-  # retry by checking even odd and deleting accordingly
-  even_odd = nil
-
   numArr = (1..n).to_a
-  numArr.length.even? ? even_odd = 'even' : even_odd = 'odd'
-
-  until numArr.length == 1 do
-    if even_odd 
+  until numArr.one? { |x| x.class == Fixnum } do
+    numArr.each_with_index do |num, i|
+      if num == 'X'
+        next
+      else
+        targetNum = numArr[i + 1.. -1].detect { |y| y.class == Fixnum }
+        if targetNum == nil
+          targetNum = numArr.detect { |z| z.class == Fixnum }
+        end
+        targetIndex = numArr.index(targetNum)
+        numArr[targetIndex] = 'X'
+      end
     end
   end
-
-  # until numArr.one? { |char| char == 'X' } do
-  #   numArr.each_with_index do |num, i|
-  #     if num != 'X'
-  #       numArr[i + 1] = 'X'
-  #     end
-  #     if i == (numArr.length - 1)
-  #       numArr.unshift('X')
-  #     end
-  #   end
-  # end
-  # p numArr.find_index { |i| i.class == Integer }
-  # return numArr.find_index { |i| i.class == Integer }
+  return numArr.detect { |i| i.class == Fixnum }
 end
-
-
-# def circle_slash(n)
-#   # numArr = [*1..n]
-#   numArr = (1..n).to_a
-#
-#   # p numArr.one? { |char| char == 'X' }
-#   until numArr.one? { |char| char == 'X' } do
-#   binding.pry
-#     numArr.each_with_index do |num, i|
-#       if num != 'X'
-#         numArr[i + 1] = 'X'
-#       end
-#       if i == (numArr.length - 1)
-#         numArr.unshift('X')
-#       end
-#     end
-#   end
-#   p numArr.find_index { |i| i.class == Integer }
-#   return numArr.find_index { |i| i.class == Integer }
-# end
 
 circle_slash(5)
 # ,3)
